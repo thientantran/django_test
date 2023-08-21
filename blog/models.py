@@ -22,6 +22,9 @@ class Post(models.Model):
     )
     category = models.ForeignKey(
         Category, on_delete=models.PROTECT, default=1)
+    # chỗ này mặc định là các bài post sẽ được để vào category là 1, mà database chưa có category, nên mình phải tạo
+    # vào admin dashboard để tạo
+
     # có protect, thì ai xoá cái category ở bảng category thì sẽ bảo vệ ở bảng POST
     title = models.CharField(max_length=250)
     excerpt = models.TextField(null=True)

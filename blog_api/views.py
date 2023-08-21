@@ -12,8 +12,9 @@ class PostList(generics.ListCreateAPIView):
 
 
 class PostDetail(generics.RetrieveDestroyAPIView):
-    # nhận được phương thức Retrive hoặc destroy
+    # nhận được phương thức Retrieve hoặc destroy
     queryset = Post.objects.all()
+    # cái phương thức này mặc định nó sẽ retrive và lấy theo Id
     serializer_class = PostSerializer
 
 """ Concrete View Classes
