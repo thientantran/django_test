@@ -8,6 +8,8 @@ from rest_framework.permissions import SAFE_METHODS, IsAuthenticatedOrReadOnly, 
 class PostList(generics.ListCreateAPIView):
     # permission_classes = [IsAdminUser]
     permission_classes = [IsAuthenticatedOrReadOnly]
+    # permission_classes = [DjangoModelPermissions]
+    # cái này là khi mình tạo user, có đưa vào 1 cái group và có add các permissions vào rồi, giờ nó tuân theo cái này  
     # nhận được phương thức list hoặc create
     queryset = Post.postobjects.all()
     # collect data from database

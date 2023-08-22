@@ -20,5 +20,8 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include('blog.urls', namespace='blog')),
-    path("api/", include('blog_api.urls', namespace='blog_api'))
+    path("api/", include('blog_api.urls', namespace='blog_api')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    # bình thường thì chỉ có superuser (admin) có thể được login vào admin dashboard
+    # để các user khác có thể login vào rồi fetch API thì phải có cái api-auth
 ]
