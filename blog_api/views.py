@@ -1,8 +1,13 @@
 from rest_framework import generics
 from blog.models import Post
 from .serializers import PostSerializer
+# add permission rules
+from rest_framework.permissions import SAFE_METHODS, IsAuthenticatedOrReadOnly, BasePermission, IsAdminUser, DjangoModelPermissions
+
 
 class PostList(generics.ListCreateAPIView):
+    # permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     # nhận được phương thức list hoặc create
     queryset = Post.postobjects.all()
     # collect data from database

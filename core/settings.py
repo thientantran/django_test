@@ -132,6 +132,15 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ]
 }
+# có 3 loại apply permissons:
+# 1. cho cả project
+# 2. cho object -> ví dụ user nào, thuộc nhóm nào thì có quyền ntn -> dùng admin dashboard để điều chỉnh
+# 3. view permissons:
+# Permissions:
+# AllowAny
+# IsAuthenticated
+# IsAdminUser
+# IsAuthenticatedOrReadOnly
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
