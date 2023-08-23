@@ -1,6 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.utils import timezone
+from django.conf import settings
 
 
 class Category(models.Model):
@@ -14,8 +15,8 @@ class Post(models.Model):
         def get_queryset(self):
             return super().get_queryset().filter(status='published')
     # chỗ này ko hiểu lắm, nó nói là, bình thường vào web, thì thấy tất cả post
-    # #giờ nó muốn filter dựa trên published posts thôi, nên dùng cái này, là 1 cái custom manager
-
+    # giờ nó muốn filter dựa trên published posts thôi, nên dùng cái này, là 1 cái custom manager
+    # chỗ này có nghĩa, khi query postobjects thì trả về những posts có status là published
     options = (
         ('draft', 'Draft'),
         ('published', 'Published'),
@@ -32,7 +33,7 @@ class Post(models.Model):
     slug = models.SlugField(max_length=250, unique_for_date='published')
     published = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='blog_posts')
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='blog_posts')
     # nếu mà delete user thì sẽ xoá bài post của user đó lun
     status = models.CharField(
         max_length=10, choices=options, default='published')
