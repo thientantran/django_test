@@ -2,7 +2,7 @@ from rest_framework import generics
 from blog.models import Post
 from .serializers import PostSerializer
 # add permission rules
-from rest_framework.permissions import SAFE_METHODS, IsAuthenticatedOrReadOnly, BasePermission, IsAdminUser, DjangoModelPermissions
+from rest_framework.permissions import SAFE_METHODS,IsAuthenticated, IsAuthenticatedOrReadOnly, BasePermission, IsAdminUser, DjangoModelPermissions
 
 
 class PostUserWritePermission(BasePermission):
@@ -21,7 +21,8 @@ class PostUserWritePermission(BasePermission):
         # mấy thằng là tác giả mới có thể xoá hoặc sửa, còn mấy thằng khác chỉ có thể get thôi
 class PostList(generics.ListCreateAPIView):
     # permission_classes = [IsAdminUser]
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    # permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
     # permission_classes = [DjangoModelPermissions]
     # cái này là khi mình tạo user, có đưa vào 1 cái group và có add các permissions vào rồi, giờ nó tuân theo cái này
     # nhận được phương thức list hoặc create
@@ -32,7 +33,7 @@ class PostList(generics.ListCreateAPIView):
     # để chuyển về dạng json, dễ dàng khi response về frontend
 
 
-class PostDetail(generics.RetrieveUpdateDestroyAPIView,PostUserWritePermission):
+class PostDetail(generics.RetrieveUpdateDestroyAPIView, PostUserWritePermission):
     permission_classes = [PostUserWritePermission]
     # nhận được phương thức Retrieve hoặc destroy
     queryset = Post.objects.all()
