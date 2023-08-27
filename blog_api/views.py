@@ -23,17 +23,23 @@ class PostUserWritePermission(BasePermission):
             return obj.author == request.user
         # mấy thằng là tác giả mới có thể xoá hoặc sửa, còn mấy thằng khác chỉ có thể get thôi
 
-class PostList(viewsets.ViewSet):
-    permission_classes = [IsAuthenticated]
+
+class PostList(viewsets.ModelViewSet):
+    permission_classes = [PostUserWritePermission]
+    serializer_class = PostSerializer
     queryset = Post.postobjects.all()
-    # sử dụng viewset sẽ ko có các get, póst, mà sẽ dùng nhưng method list, retrieve được built sẵn để thực hiện
-    def list(self, request):
-        serializer_class = PostSerializer(self.queryset, many=True)
-        return Response(serializer_class.data)
-    def retrieve(self, request, pk=None):
-        post = get_object_or_404(self.queryset, pk=pk)
-        serializer_class = PostSerializer(post)
-        return Response(serializer_class.data)
+
+# class PostList(viewsets.ViewSet):
+#     permission_classes = [IsAuthenticated]
+#     queryset = Post.postobjects.all()
+#     # sử dụng viewset sẽ ko có các get, póst, mà sẽ dùng nhưng method list, retrieve được built sẵn để thực hiện
+#     def list(self, request):
+#         serializer_class = PostSerializer(self.queryset, many=True)
+#         return Response(serializer_class.data)
+#     def retrieve(self, request, pk=None):
+#         post = get_object_or_404(self.queryset, pk=pk)
+#         serializer_class = PostSerializer(post)
+#         return Response(serializer_class.data)
 
     # def list(self, request):
     #     pass
