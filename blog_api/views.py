@@ -27,7 +27,15 @@ class PostUserWritePermission(BasePermission):
 class PostList(viewsets.ModelViewSet):
     permission_classes = [PostUserWritePermission]
     serializer_class = PostSerializer
-    queryset = Post.postobjects.all()
+    def get_object(self, queryset=None, **kwargs):
+        # sử dụng cái này để lấy 1 object có tên như theo query,
+        # chú ý là sẽ phải giống như khi query, phân biệt cả chữ thường và chữ hoa
+        item = self.kwargs.get('pk')
+        return get_object_or_404(Post, title=item)
+
+    # Define Custom Queryset, khi mà chỉ có api mà ko có key để query thì vào đây, còn khi có query key thì nhảy vào cái get_object
+    def get_queryset(self):
+        return Post.objects.all()
 
 # class PostList(viewsets.ViewSet):
 #     permission_classes = [IsAuthenticated]
