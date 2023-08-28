@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from rest_framework.schemas import get_schema_view
+from rest_framework.documentation import include_docs_urls
 from django.urls import path, include
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -33,6 +34,7 @@ urlpatterns = [
     # bình thường thì chỉ có superuser (admin) có thể được login vào admin dashboard
     # để các user khác có thể login vào rồi fetch API thì phải có cái api-auth
     path("", include('blog.urls', namespace='blog')),
+    path('docs/', include_docs_urls(title='BlogAPI')),
     path('schema', get_schema_view(
         title="BlogAPI",
         description="API for the BlogAPI",
