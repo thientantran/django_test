@@ -24,18 +24,47 @@ class PostUserWritePermission(BasePermission):
         # mấy thằng là tác giả mới có thể xoá hoặc sửa, còn mấy thằng khác chỉ có thể get thôi
 
 
-class PostList(viewsets.ModelViewSet):
-    permission_classes = [PostUserWritePermission]
-    serializer_class = PostSerializer
-    def get_object(self, queryset=None, **kwargs):
-        # sử dụng cái này để lấy 1 object có tên như theo query,
-        # chú ý là sẽ phải giống như khi query, phân biệt cả chữ thường và chữ hoa
-        item = self.kwargs.get('pk')
-        return get_object_or_404(Post, title=item)
+# class PostList(viewsets.ModelViewSet):
+#     permission_classes = [PostUserWritePermission]
+#     serializer_class = PostSerializer
+#     def get_object(self, queryset=None, **kwargs):
+#         # sử dụng cái này để lấy 1 object có tên như theo query,
+#         # chú ý là sẽ phải giống như khi query, phân biệt cả chữ thường và chữ hoa
+#         item = self.kwargs.get('pk')
+#         print(item)
+#         return get_object_or_404(Post, id=item)
+#     # Define Custom Queryset, khi mà chỉ có api mà ko có key để query thì vào đây, còn khi có query key thì nhảy vào cái get_object
+#     def get_queryset(self):
+#         # filter posts theo author
+#         try:
+#             user = self.request.user
+#             return Post.objects.filter(author=user)
+#         except:
+#             return []
 
-    # Define Custom Queryset, khi mà chỉ có api mà ko có key để query thì vào đây, còn khi có query key thì nhảy vào cái get_object
+# api "/api/" nó có nhiều nhánh ở trong nữa, thì nên tạo mỗi nhánh
+class PostList(generics.ListAPIView):
+    # permission_classes = [IsAuthenticated]
+    serializer_class = PostSerializer
+
     def get_queryset(self):
-        return Post.objects.all()
+        try:
+            user = self.request.user
+            return Post.objects.filter(author=user)
+        except:
+            return []
+
+class PostDetail(generics.ListAPIView):
+    # chỗ này sử dụng listAPi view thì ra, nhưng trả về dạng list, còn dùng cái Retrieve thì nó lại ko ra
+    # do đó ko thể get 1 oject để sửa hoặc xoá được, (do đang dùng listAPI)
+    # thì do dùng objects.filter nên mặc định trả về list, và ko hỗ trợ trả về 1 object để xoá, sửa, do đó ko dùng cho retrieve được
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        slug = self.request.query_params.get('slug', None)
+        # chỗ này có thể dụng nhiều variables
+        print(slug)
+        return Post.objects.filter(slug=slug)
 
 # class PostList(viewsets.ViewSet):
 #     permission_classes = [IsAuthenticated]
