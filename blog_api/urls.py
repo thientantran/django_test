@@ -1,4 +1,4 @@
-from .views import PostList, PostDetail
+from .views import PostList, PostDetail, PostListDetailfilter
 #from rest_framework.routers import DefaultRouter
 from django.urls import path
 from rest_framework.routers import DefaultRouter
@@ -15,5 +15,8 @@ app_name = 'blog_api'
 # ]
 urlpatterns = [
     path('posts/', PostDetail.as_view(), name='detailcreate'),
+    # http://localhost:8000/api/posts/?slug=test
+    path('search/', PostListDetailfilter.as_view(), name='postsearch'),
+    # http://localhost:8000/api/search/?search=te
     path('', PostList.as_view(), name='listcreate'),
 ]

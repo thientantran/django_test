@@ -7,6 +7,7 @@ from rest_framework import viewsets
 
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
+from rest_framework import filters
 
 class PostUserWritePermission(BasePermission):
     message = 'Editing posts is restricted to the author only.'
@@ -64,7 +65,19 @@ class PostDetail(generics.ListAPIView):
         slug = self.request.query_params.get('slug', None)
         # chỗ này có thể dụng nhiều variables
         print(slug)
-        return Post.objects.filter(slug=slug)
+        return Post.objects.filter(slug__icontains=slug)
+
+class PostListDetailfilter(generics.ListAPIView):
+
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['^slug']
+
+    # '^' Starts-with search.
+    # '=' Exact matches.
+    # '@' Full-text search. (Currently only supported Django's PostgreSQL backend.)
+    # '$' Regex search.
 
 # class PostList(viewsets.ViewSet):
 #     permission_classes = [IsAuthenticated]
