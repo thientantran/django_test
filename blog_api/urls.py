@@ -14,7 +14,8 @@ app_name = 'blog_api'
 #     path('', PostList.as_view(), name='listcreate')
 # ]
 urlpatterns = [
-    path('posts/', PostDetail.as_view(), name='detailcreate'),
+    path('post/<str:pk>/', PostDetail.as_view(), name='detailpost'),
+    # path('posts/', PostDetail.as_view(), name='detailcreate'),
     # http://localhost:8000/api/posts/?slug=test
     path('search/', PostListDetailfilter.as_view(), name='postsearch'),
     # http://localhost:8000/api/search/?search=te

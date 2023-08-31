@@ -55,18 +55,28 @@ class PostList(generics.ListAPIView):
         except:
             return []
 
-class PostDetail(generics.ListAPIView):
+class PostDetail(generics.RetrieveAPIView):
     # chỗ này sử dụng listAPi view thì ra, nhưng trả về dạng list, còn dùng cái Retrieve thì nó lại ko ra
     # do đó ko thể get 1 oject để sửa hoặc xoá được, (do đang dùng listAPI)
     # thì do dùng objects.filter nên mặc định trả về list, và ko hỗ trợ trả về 1 object để xoá, sửa, do đó ko dùng cho retrieve được
+
+    #  CÁCH ĐỂ FILTER 1 LIST CÓ NHIỀU KẾT QUẢ PHẢI DÙNG GETQUERYSET
+    # serializer_class = PostSerializer
+    # def get_queryset(self):
+    #     slug = self.request.query_params.get('slug', None)
+    #     # chỗ này có thể dụng nhiều variables
+    #     print(slug)
+    #     return Post.objects.filter(slug__icontains=slug)
+    # CACH 1:
     serializer_class = PostSerializer
-
-    def get_queryset(self):
-        slug = self.request.query_params.get('slug', None)
-        # chỗ này có thể dụng nhiều variables
-        print(slug)
-        return Post.objects.filter(slug__icontains=slug)
-
+    def get_object(self, queryset=None, **kwargs):
+        item = self.kwargs.get('pk')
+        print(item)
+        return get_object_or_404(Post, slug=item)
+    # CACH 2: tu dong lay primary
+    # permission_classes = [PostUserWritePermission]
+    # queryset = Post.objects.all()
+    # serializer_class = PostSerializer
 class PostListDetailfilter(generics.ListAPIView):
 
     queryset = Post.objects.all()
