@@ -45,7 +45,7 @@ class PostUserWritePermission(BasePermission):
 
 # api "/api/" nó có nhiều nhánh ở trong nữa, thì nên tạo mỗi nhánh
 class PostList(generics.ListAPIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     serializer_class = PostSerializer
 
     def get_queryset(self):
@@ -148,7 +148,27 @@ class PostListDetailfilter(generics.ListAPIView):
 #     queryset = Post.objects.all()
 #     # cái phương thức này mặc định nó sẽ retrive và lấy theo Id
 #     serializer_class = PostSerializer
+# Post Admin
 
+class CreatePost(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+class AdminPostDetail(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+class EditPost(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PostSerializer
+    queryset = Post.objects.all()
+
+class DeletePost(generics.RetrieveDestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PostSerializer
+    queryset = Post.objects.all()
 """ Concrete View Classes
 #CreateAPIView
 Used for create-only endpoints.
