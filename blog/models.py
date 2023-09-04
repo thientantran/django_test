@@ -2,8 +2,11 @@ from django.db import models
 # from django.contrib.auth.models import User
 from django.utils import timezone
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
-
+def upload_to(instance, filename):
+    return 'posts/{filename}'.format(filename=filename)
+# ko tận dụng postid ở đây, vì cái này run trước khi picture được saved,
 class Category(models.Model):
     name = models.CharField(max_length=100)
 
@@ -28,6 +31,10 @@ class Post(models.Model):
 
     # có protect, thì ai xoá cái category ở bảng category thì sẽ bảo vệ ở bảng POST
     title = models.CharField(max_length=250)
+    image = models.ImageField(
+        _("Image"), upload_to=upload_to, default='posts/default.jpg')
+    # dấu _ như 1 cái translator để nói cái field này là gì
+    # default là nếu ai ko upload image, thì nó lấy mặc định cái hình này
     excerpt = models.TextField(null=True)
     content = models.TextField()
     slug = models.SlugField(max_length=250, unique_for_date='published')
