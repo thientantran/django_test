@@ -24,7 +24,11 @@ from django.urls import path, include
 # )
 from django.conf import settings
 from django.conf.urls.static import static
+from django.urls import re_path
 urlpatterns = [
+    # Oauth
+    # path('auth/', include('drf_social_oauth2.urls', namespace='drf')),
+    re_path(r'^auth/', include('drf_social_oauth2.urls', namespace='drf')),
     path('admin/', admin.site.urls),
 
     # đổi vị trí vì có thể nó sẽ nhận token như 1 key của post
