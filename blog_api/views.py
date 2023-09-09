@@ -75,7 +75,7 @@ class PostDetail(generics.RetrieveAPIView):
     def get_object(self, queryset=None, **kwargs):
         item = self.kwargs.get('pk')
         print(item)
-        return get_object_or_404(Post, slug=item)
+        return get_object_or_404(Post, id=item)
     # CACH 2: tu dong lay primary
     # permission_classes = [PostUserWritePermission]
     # queryset = Post.objects.all()

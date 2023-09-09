@@ -209,6 +209,28 @@ MEDIA_URL = '/media/'
 
 
 AUTHENTICATION_BACKENDS = (
+    # Others auth providers (e.g. Google, OpenId, etc)
+
+    # Facebook OAuth2
+    'social_core.backends.facebook.FacebookAppOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+
+    # drf_social_oauth2
     'drf_social_oauth2.backends.DjangoOAuth2',
+
+    # Django
     'django.contrib.auth.backends.ModelBackend',
 )
+
+# Facebook configuration
+SOCIAL_AUTH_FACEBOOK_KEY = ('424762231818988')
+SOCIAL_AUTH_FACEBOOK_SECRET = ('7ea506193526e3f8ecc7743579545e15')
+# SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'http://localhost:3000/'
+
+# Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from Facebook.
+# Email is not sent by default, to get it, you must request the email permission.
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id, name, email'
+}
+SOCIAL_AUTH_USER_FIELDS = ['email', 'username', 'first_name', 'password']
